@@ -12,9 +12,35 @@
     <link rel="manifest" href="https://yinyang.computerpho.be/site.webmanifest">
     <link rel="stylesheet" href="https://yinyang.computerpho.be/style.css">
     
+    <style type="text/css">
+        #distinctInputUrls img {
+            width: 128px;
+        }
+
+        form {
+            display: contents;
+        }
+    </style>
     <script src="https://unpkg.com/htmx.org@1.9.9" integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(dcle) {
+            document.body.addEventListener('htmx:configRequest', function(evt) {
+                const userStr = btoa(['user', 'passphrase'].map((id) => document.getElementById(id).value).join(':'));
+                evt.detail.headers['Authorization'] = `Basic ${userStr}`;
+            });
+        });
+    </script>
 </head>
 
 <body>
+    <div>
+        <input type="text" id="user" placeholder="User name"/>
+        <input type="password" id="passphrase" placeholder="Passphrase"/>
+    </div>
+    <div id="distinctInputUrls">
+        <button hx-get="https://api.admin.yinyang.computerpho.be/q/distinctInputUrls" hx-swap="outerHTML">
+            Load distinct input images
+        </button>
+    </div>
 </body>
 </html>
