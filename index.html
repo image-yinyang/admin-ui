@@ -34,8 +34,10 @@
 
 <body>
     <div>
-        <input type="text" id="user" placeholder="User name"/>
-        <input type="password" id="passphrase" placeholder="Passphrase"/>
+        <form>
+            <input type="text" id="user" autocomplete="username" placeholder="User name" size="10" />
+            <input type="password" id="passphrase" autocomplete="current-password" placeholder="Passphrase" size="10" />
+        </form>
     </div>
     <div id="distinctInputUrls">
         <button hx-get="https://api.admin.yinyang.computerpho.be/q/distinctInputUrls" hx-swap="outerHTML">
