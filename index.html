@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://yinyang.computerpho.be/favicon-16x16.png">
     <link rel="manifest" href="https://yinyang.computerpho.be/site.webmanifest">
     <link rel="stylesheet" href="https://yinyang.computerpho.be/style.css">
-    
+
     <style type="text/css">
         #distinctInputUrls img {
             width: 128px;
@@ -21,28 +21,44 @@
             display: contents;
         }
     </style>
-    <script src="https://unpkg.com/htmx.org@1.9.9" integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.9"
+        integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX"
+        crossorigin="anonymous"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function(dcle) {
-            document.body.addEventListener('htmx:configRequest', function(evt) {
+        document.addEventListener('DOMContentLoaded', function (dcle) {
+            document.body.addEventListener('htmx:configRequest', function (evt) {
                 const userStr = btoa(['user', 'passphrase'].map((id) => document.getElementById(id).value).join(':'));
                 evt.detail.headers['Authorization'] = `Basic ${userStr}`;
+            });
+
+            document.body.addEventListener('htmx:afterSwap', function (evt) {
+                if (evt.detail.target.id === 'main') {
+                    document.getElementById('loginForm').style.display = 'none';
+                }
             });
         });
     </script>
 </head>
 
 <body>
-    <div>
+    <h3 style="margin: 5vh 0 5vh 0;" id="header">
+        <a href="https://admin.yinyang.computerpho.be">
+            <img src="https://avatars.githubusercontent.com/u/153049230?s=320&v=4"
+                style="width: 100px; border-radius: 0.3em;" />
+        </a>
+    </h3>
+    <div id="loginForm">
         <form>
-            <input type="text" id="user" autocomplete="username" placeholder="User name" size="10" />
-            <input type="password" id="passphrase" autocomplete="current-password" placeholder="Passphrase" size="10" />
+            <input type="text" id="user" autocomplete="username" placeholder="User name" size="10" /><br />
+            <input type="password" id="passphrase" autocomplete="current-password" placeholder="Passphrase"
+                size="10" /><br />
+            <button id="loginButton" hx-get="https://api.admin.yinyang.computerpho.be/ui-index" hx-swap="outerHTML"
+                hx-target="#main">
+                Login
+            </button>
         </form>
     </div>
-    <div id="distinctInputUrls">
-        <button hx-get="https://api.admin.yinyang.computerpho.be/q/distinctInputUrls" hx-swap="outerHTML">
-            Load distinct input images
-        </button>
-    </div>
+    <div id="main"></div>
 </body>
+
 </html>
